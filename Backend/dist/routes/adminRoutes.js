@@ -1,0 +1,11 @@
+import express from "express";
+import { isAuthenticated, LoginForm } from "../controllers/adminControllers/LoginController";
+import { Delete, FetchUserData } from "../controllers/adminControllers/dashboardController";
+import { Logout } from "../controllers/authController/logout";
+const router = express.Router();
+router.post('/admin-login-form', LoginForm);
+router.get('/admin-auth', isAuthenticated);
+router.get('/fetch-data', FetchUserData);
+router.post('/logout', Logout);
+router.delete('/delete/:id', Delete);
+export default router;
