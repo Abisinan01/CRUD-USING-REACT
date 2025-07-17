@@ -18,7 +18,7 @@ export const VerifyAuth = async (req: any, res: Response, next: NextFunction) =>
       return res.status(401).json({ isLoggedIn: false });
     }
 
-    const user = await User.findOne({_id:decoded.id,role:"User"});
+    const user = await User.findOne({_id:decoded.id,role:"user"});
     if (!user) {
       res.clearCookie('jwt', { httpOnly: true, path: '/' });
       return res.status(401).json({ isLoggedIn: false, message: 'User not found' });

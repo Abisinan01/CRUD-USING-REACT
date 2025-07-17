@@ -10,8 +10,9 @@ const UserSchema = new Schema({
         required: true,
         index: { unique: true }
     },
+    PhoneNumber: { type: String },
     password: String,
-    role: { type: String, default: "User" },
+    role: { type: String, default: "user" },
     profile: { type: String }
 });
 const User = model('Users', UserSchema);

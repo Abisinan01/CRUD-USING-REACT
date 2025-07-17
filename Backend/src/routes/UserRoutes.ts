@@ -4,9 +4,9 @@ import { Home } from "../controllers/homeController/homeController"
 import { ProfileUpdate } from "../controllers/homeController/profileController"
 import { verify } from "jsonwebtoken"
 const router = express.Router()
-
+    
 router.post("/profile", VerifyAuth, ProfileUpdate)
 router.get('/fetch-data', VerifyAuth, Home)
 router.get('/', VerifyAuth, Home)
-
-export default router
+      
+export default router   

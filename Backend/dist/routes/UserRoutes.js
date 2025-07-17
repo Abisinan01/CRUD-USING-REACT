@@ -5,5 +5,5 @@ import { ProfileUpdate } from "../controllers/homeController/profileController";
 const router = express.Router();
 router.post("/profile", VerifyAuth, ProfileUpdate);
 router.get('/fetch-data', VerifyAuth, Home);
-// router.post("/", VerifyAuth, Home)
+router.get('/', VerifyAuth, Home);
 export default router;

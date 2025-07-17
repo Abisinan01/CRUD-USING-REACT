@@ -1,15 +1,26 @@
 import User from "../Model/UserSchema";
-export const isAlreadyExists = async ({ username, email }) => {
+export const isAlreadyExists = async ({ username, email, role }) => {
     console.log("Checking for:", { username, email });
     const isExists = await User.findOne({
         $or: [
-            { username: { $regex: `^${username}$`, $options: 'i' } },
-            { email: { $regex: `^${email}$`, $options: 'i' } }
+            { role, username: { $regex: `^${username}$`, $options: 'i' } },
+            { email }
         ]
     });
-    console.log("Debug isExists");
-    if (!isExists || isExists.role === 'Admin') {
-        return { message: "User not found", status: false };
+    // if (role === 'user') {
+    //     console.log("Debug isExists", isExists);
+    //     if (!isExists || isExists.role === 'Admin') {
+    //         return { message: "User not found", status: false, user: null };
+    //     }
+    // } else if (role === 'admin') {
+    //     console.log("Debug isExists", isExists);
+    //     if (!isExists || isExists.role === 'User') {
+    //         return { message: "User not found", status: false, user: null };
+    //     }
+    // }
+    console.log("Debug isExists", isExists);
+    if (!isExists) {
+        return { message: "User not found", status: false, user: null };
     }
     return { message: "Done", status: true, user: isExists };
 };

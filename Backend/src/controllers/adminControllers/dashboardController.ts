@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
 import User from "../../Model/UserSchema";
-import { isAuthenticated } from "../adminControllers/LoginController";
 
 export const FetchUserData = async (req: Request, res: Response) => {
     try {
         console.log("Req fetchuser")
-        const allUsers = await User.find({ role: "User" });
+        const allUsers = await User.find({ role: "user" });
         console.log("All Users ", allUsers)
         res.json({ users: allUsers, success: true })
     } catch (error) {

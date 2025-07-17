@@ -9,9 +9,3 @@ export const Home = async (req, res) => {
         console.log(error);
     }
 };
-// export const FetchData = async (req: Response, res: Response) => {
-//     try {
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }

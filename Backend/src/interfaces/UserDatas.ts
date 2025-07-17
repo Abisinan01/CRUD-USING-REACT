@@ -3,4 +3,5 @@ export interface UserDetails {
     email: string;
     password: string;
     confirmPassword: string;
+    role: string
 }

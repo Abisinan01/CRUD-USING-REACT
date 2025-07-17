@@ -5,7 +5,7 @@ import { HashPassword } from "./HashPassword"
 type UserData = Omit<UserDetails, "confirmPassword">
 
 export default async function CreateNewUsers({ username, email, password }: UserData) {
-    const isUserExist = await User.findOne({ $or: [{ username }, { email }] })
+    const isUserExist = await User.findOne({ $or: [{ username : {$regex:username , $options:"i"} }, { email }] })
 
     if (isUserExist) {
         return { message: "User already exists.", status: false }
@@ -17,7 +17,7 @@ export default async function CreateNewUsers({ username, email, password }: User
             username,
             email,
             password: hashedPassword,
-            role:"User"
+            role:"user"
         }).save()
         
         return { message: "User successfully created." , status:true}

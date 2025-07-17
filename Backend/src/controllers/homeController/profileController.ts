@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import User from "../../Model/UserSchema";
- 
-export const  ProfileUpdate = async (req: Request, res: Response) => {
+
+export const ProfileUpdate = async (req: any, res: Response) => {
     try {
-        console.log("Token data:", req.user);
+        console.log("Token data:", req?.user);
         const id: string = req?.user?.id;
         console.log('reqbody', req.body)
 
@@ -23,7 +23,7 @@ export const  ProfileUpdate = async (req: Request, res: Response) => {
             return res.status(404).json({ message: "User not found", success: false });
         }
 
-        res.status(200).json({ message: "Profile updated", success: true });
+        res.status(200).json({ message: "Profile updated", success: true, user: updateData });
     } catch (error) {
         console.error("Profile update error:", error);
         res.status(500).json({ message: "Profile updation failed", success: false });

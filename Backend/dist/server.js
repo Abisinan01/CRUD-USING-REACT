@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 connectDB();
 app.use(cors({
-    origin: 'http://localhost:4444',
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 app.use(cookieParser());

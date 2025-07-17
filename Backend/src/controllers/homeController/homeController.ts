@@ -2,7 +2,7 @@
 import { Response, Request } from "express"
 import User from "../../Model/UserSchema"
 
-export const Home = async (req: Request, res: Response) => {
+export const Home = async (req: any, res: Response) => {
     try {
         const userData = await User.findById(req.user.id)
         res.status(200).json({message:"Fetcing done",success:true,user:userData})
@@ -11,11 +11,3 @@ export const Home = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
-
-// export const FetchData = async (req: Response, res: Response) => {
-//     try {
-        
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }

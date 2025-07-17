@@ -6,6 +6,7 @@ interface IUser extends Document {
     password: string;
     role?: string;
     profile: string;
+    PhoneNumber: string;
 }
 
 const UserSchema: Schema<IUser> = new Schema<IUser>({
@@ -19,8 +20,9 @@ const UserSchema: Schema<IUser> = new Schema<IUser>({
         required: true,
         index: { unique: true }
     },
+    PhoneNumber:{type:String},
     password: String,
-    role: { type: String, default: "User" },
+    role: { type: String, default: "user" },
     profile:{type:String}
 });
 

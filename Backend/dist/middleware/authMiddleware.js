@@ -1,23 +1,31 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import jwt from 'jsonwebtoken';
-export const VerifyAuth = (req, res, next) => {
+import User from '../Model/UserSchema';
+export const VerifyAuth = async (req, res, next) => {
     try {
         const token = req.cookies.jwt;
-        console.log(token);
         if (!token) {
-            res.json({ isLoggedIn: false });
+            res.clearCookie('jwt', { httpOnly: true, path: '/' });
+            return res.status(401).json({ isLoggedIn: false });
         }
-        const decodeToken = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("decodeToken ", decodeToken);
-        req.user = decodeToken;
-        if (!decodeToken) {
-            res.json({ message: 'Access deniend', isLoggedIn: false });
+        let decoded;
+        try {
+            decoded = jwt.verify(token, process.env.JWT_SECRET);
         }
+        catch {
+            res.clearCookie('jwt', { httpOnly: true, path: '/' });
+            return res.status(401).json({ isLoggedIn: false });
+        }
+        const user = await User.findOne({ _id: decoded.id, role: "user" });
+        if (!user) {
+            res.clearCookie('jwt', { httpOnly: true, path: '/' });
+            return res.status(401).json({ isLoggedIn: false, message: 'User not found' });
+        }
+        req.user = decoded;
         next();
     }
     catch (error) {
-        console.error("admin auth failed", error);
-        return res.status(500).redirect('/');
+        console.error('Auth failed', error);
+        res.clearCookie('jwt', { httpOnly: true, path: '/' });
+        return res.status(500).json({ isLoggedIn: false });
     }
 };

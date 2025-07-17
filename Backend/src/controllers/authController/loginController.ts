@@ -9,27 +9,35 @@ dotenv.config()
 
 export const LoginForm = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { username, email, password } = req.body.formData as UserDetails;
-        console.log("password ", password)//DEBUG
+        const { username, email, password, role } = req.body.formData as UserDetails;
+        console.log("password ", password, "role :", role)//DEBUG
 
-        const isExistsUser = await isAlreadyExists({ username, email });
-        console.log("isExistsUser ", isExistsUser)
+        if (role === 'admin') {
 
-        const comparePassword = await comparePasswords(password, isExistsUser?.user?.password)
+        }
+        const isExists = await isAlreadyExists({ username, email, role });
+        if (!isExists.user) {
+            res.json({ message: "Invalid credentials", success: false })
+            return
+        }
+        console.log("isExists ", isExists)
+
+        const comparePassword = await comparePasswords(password, isExists?.user?.password as string)
+        console.log('Comparepasswered', comparePassword)
 
         if (!comparePassword) {
             res.json({ message: "Incorrect password", success: false })
             return
         }
 
-        if ((await isExistsUser).status === false) {
+        if ((await isExists).status === false) {
             res.json({
                 success: false,
-                message: (await isExistsUser).message
+                message: (await isExists).message
             })
         }
 
-        const token = await SignWithJwt(username, isExistsUser.user?.id, isExistsUser?.user?.role || "User")
+        const token = await SignWithJwt(username, isExists.user?.id, isExists?.user?.role || "User")
         console.log("jwt :", token);
 
         res.cookie('jwt', token, {
@@ -42,34 +50,13 @@ export const LoginForm = async (req: Request, res: Response): Promise<void> => {
         console.log('Login')
         res.status(200)
             .json({
-                message: (await isExistsUser).message,
+                message: (await isExists).message,
                 success: true,
                 token,
-                user: isExistsUser.user
+                user: isExists.user
             })
-        
+
     } catch (error) {
         console.log(error)
-    }
-}
-
-
-export const isAuthenticated = async (req: Request, res: Response) => {
-    try {
-        const token = req.cookies.jwt!
-        console.log("JWT TOKEN :", token)
-        const secret = process.env?.JWT_SECRET
-
-        if (!secret) {
-            return res.status(500).json({ success: false, error: 'Server misconfigured' });
-        }
-
-        const docode = jwt.verify(token, secret, (err: any, decoded: any) => {
-            console.log(decoded)
-        })
-        res.json({ token, success: true })
-
-    } catch (error) {
-        console.log("Is Authentication failed ", error)
     }
 }

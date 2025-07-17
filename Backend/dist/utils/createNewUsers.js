@@ -1,7 +1,7 @@
 import User from "../Model/UserSchema";
 import { HashPassword } from "./HashPassword";
 export default async function CreateNewUsers({ username, email, password }) {
-    const isUserExist = await User.findOne({ $or: [{ username }, { email }] });
+    const isUserExist = await User.findOne({ $or: [{ username: { $regex: username, $options: "i" } }, { email }] });
     if (isUserExist) {
         return { message: "User already exists.", status: false };
     }
@@ -12,7 +12,7 @@ export default async function CreateNewUsers({ username, email, password }) {
             username,
             email,
             password: hashedPassword,
-            role: "User"
+            role: "user"
         }).save();
         return { message: "User successfully created.", status: true };
     }
