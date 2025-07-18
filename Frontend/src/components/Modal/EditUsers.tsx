@@ -3,9 +3,9 @@ import React, { useEffect, useId, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import type { RootState } from '../redux/store';
+import type { RootState } from '../../redux/store';
 import { toast } from 'react-toastify';
-
+const localUrl = import.meta.env.VITE_API_URL
 
 interface Props {
   show: boolean;
@@ -56,7 +56,7 @@ const EditUsers = ({ show, onClose, userId }: Props) => {
         toast.error("Please fill the fields")
         return
       }
-      const response = await axios.post(`http://localhost:3000/admin/edit-user`, { formData });
+      const response = await axios.post(`${localUrl}/admin/edit-user`, { formData });
       
       if (response.data.success === false) {
         toast.error(response.data.message)

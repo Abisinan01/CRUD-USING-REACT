@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
@@ -57,7 +56,7 @@ const CreateUserModal: React.FC<Props> = ({ show, onClose }) => {
         try {
             await validationSchema.validate(formData, { abortEarly: false });
 
-            const response = await axios.post(`${localUrl}http://localhost:3000/admin/create-user`, { formData });
+            const response = await axios.post(`${localUrl}/admin/create-user`, { formData });
             console.log(response);
             
             navigate("/admin/login")

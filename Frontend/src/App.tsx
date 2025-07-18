@@ -1,4 +1,3 @@
-import React from 'react'
 import Login from './pages/User/Login'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Signup from './pages/User/Signup'
@@ -11,7 +10,6 @@ import { AdminProtectedRoutes, AdminPublicRoutes } from './routes/adminProtecete
 import Dashboard from './pages/admin/AdminDashboard'
 import NotFound from './pages/NotFound'
 const App = () => {
-
   return (
     <BrowserRouter>
       <ToastContainer />

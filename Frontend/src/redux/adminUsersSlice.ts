@@ -32,8 +32,11 @@ const adminUserSlice = createSlice({
         state.usersList[index] = action.payload;
       }
     },
+    clearList: (state) => {
+      state.usersList = []
+    }
   },
 });
 
-export const { setUsers, removeUser, updateUser } = adminUserSlice.actions;
+export const { setUsers, removeUser, updateUser,clearList } = adminUserSlice.actions;
 export default adminUserSlice.reducer;
